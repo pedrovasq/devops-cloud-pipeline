@@ -4,15 +4,21 @@ import (
     "log"
 	"time"
 	"fmt"
+	"os"
 
     "github.com/gofiber/fiber/v2"
 )
 
 func main() {
+	appName := os.Getenv("APP_NAME")
+	if appName == "" {
+		appName = "devops-api"
+	}
+
     app := fiber.New()
 
     app.Get("/health", func (c *fiber.Ctx) error {
-        return c.SendStatus(200)
+		return c.SendString(fmt.Sprintf(`{"status":"ok","app":"%s"}`, appName))
     })
 
 	app.Get("/time", func (c *fiber.Ctx) error {
